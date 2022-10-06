@@ -6,6 +6,7 @@ import Home from "../routes/Home";
 const AppRouter = ({ isLoggedIn }) => {
   return (
     <Router>
+      {isLoggedIn ? "" : ""}
       <Routes>
         {isLoggedIn ? (
           <>

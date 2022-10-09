@@ -10,8 +10,8 @@ function App() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        console.log(userObj);
-        setUserObj(user);
+        setUserObj(auth.currentUser);
+        console.log(auth.currentUser);
         console.log(userObj);
       } else {
         setIsLoggedIn(false);

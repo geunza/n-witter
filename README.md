@@ -42,29 +42,29 @@ useEffect(() => {
   console.log(a);
   b("Hi");
   console.log(a);
-}, []) +
-  ///출력
-  "Hello" +
-  "Hello";
+}, []);
+///출력
+("Hello");
+("Hello");
 ```
 
 아래와 같이 진행해서 확인을 해보니 정상적으로 출력이 된다.
 
-```
-  const [userObj, setUserObj] = useState(null);
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserObj(auth.currentUser);
-      } else {
-        setIsLoggedIn(false);
-      }
-      setInit(true);
-    });
-  }, []);
+```javascript
+const [userObj, setUserObj] = useState(null);
+useEffect(() => {
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setIsLoggedIn(true);
+      setUserObj(auth.currentUser);
+    } else {
+      setIsLoggedIn(false);
+    }
+    setInit(true);
+  });
+}, []);
 
-  useEffect(()=>{
-    console.log(userObj);
-  }, [userObj])
+useEffect(() => {
+  console.log(userObj);
+}, [userObj]);
 ```

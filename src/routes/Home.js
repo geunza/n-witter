@@ -2,38 +2,37 @@ import { dbService } from "fBase";
 import {
   collection,
   addDoc,
-  serverTimestamp,
-  getDocs,
+  onSnapshot,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 //https://firebase.google.com/docs/firestore/query-data/get-data?hl=ko
 //https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko
 const Home = ({ userObj }) => {
-  console.log(userObj);
-  setTimeout(() => console.log(userObj), 2000);
-
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
-  const getNweets = async () => {
-    const query = await getDocs(collection(dbService, "nweets"));
-    query.forEach((doc) => {
-      const nweetObj = {
-        ...doc.data(),
-        id: doc.id,
-        createorId: 121212,
-      };
-      setNweets((prev) => [nweetObj, ...prev]);
-    });
-    // setNweets(query)
-  };
   useEffect(() => {
-    getNweets();
+    const q = query(
+      collection(dbService, "nweets"),
+      orderBy("createdAt", "desc")
+    );
+    onSnapshot(q, (snapshot) => {
+      const nweetArray = snapshot.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+      setNweets(nweetArray);
+    });
   }, []);
   const onSubmit = async (e) => {
     e.preventDefault();
     await addDoc(collection(dbService, "nweets"), {
       text: nweet,
-      createdAt: serverTimestamp(),
+      createdAt: Date.now(),
+      createorId: userObj.uid,
     });
     setNweet("");
   };
@@ -45,7 +44,6 @@ const Home = ({ userObj }) => {
   };
   return (
     <>
-      <div>{userObj}</div>
       <form onSubmit={onSubmit}>
         <input
           type="text"
@@ -59,8 +57,8 @@ const Home = ({ userObj }) => {
       <div>
         {nweets.map((nweet) => {
           return (
-            <div key={nweet.id}>
-              <h4>{nweet.nweet}</h4>
+            <div key={nweet.createdAt}>
+              <h4>{nweet.text}</h4>
             </div>
           );
         })}

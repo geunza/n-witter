@@ -6,11 +6,14 @@
 
 9.6.1v를 사용해 아주 애를 먹음. 왜 버전에 집착하는지 알게됨.
 
+---
+
 ### 2022.10.07 ~ 2022.10.10
 
 firebase auth의 user를 끌고 오는 과정에서 아주 고생을 함.
 
 ```javascript
+//App.js
 const [userObj, setUserObj] = useState(null);
 useEffect(() => {
   auth.onAuthStateChanged((user) => {
@@ -51,6 +54,7 @@ useEffect(() => {
 아래와 같이 진행해서 확인을 해보니 정상적으로 출력이 된다.
 
 ```javascript
+//App.js
 const [userObj, setUserObj] = useState(null);
 useEffect(() => {
   auth.onAuthStateChanged((user) => {
@@ -68,3 +72,49 @@ useEffect(() => {
   console.log(userObj);
 }, [userObj]);
 ```
+
+### 2022.10.10
+
+라우터에서의 props 에러
+App.js 에서 만든 userObj를 Router.js를 통해 Home.js로 전달하기 위함.
+아래와 같이 작성
+
+```javascript
+//App.js
+<AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />;
+
+//Router.js
+const AppRouter = ({ userObj }) => {
+  return (
+    <Router>
+      <Routes>
+        <Route exact path="/" userObj={userObj} element={<Home />}></Route>
+      </Routes>
+    </Router>
+  );
+};
+
+//Home.js
+const Home = ({ userObj }) => {
+  console.log(userObj);
+  return <></>;
+};
+```
+
+props가 전달되지 않음.
+Route에서 위와 같이 작성하면 안됬고, 아래처럼 작성했어야함
+
+```javascript
+//Router.js
+const AppRouter = ({ userObj }) => {
+  return (
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home userObj={userObj} />}></Route>
+      </Routes>
+    </Router>
+  );
+};
+```
+
+같은 실수를 반복하지 않기 위해 작성

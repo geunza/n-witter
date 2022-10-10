@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   HashRouter as Router,
   Navigate,
@@ -17,7 +17,7 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
       <Routes>
         {isLoggedIn ? (
           <>
-            <Route exact path="/" userObj={userObj} element={<Home />}></Route>
+            <Route exact path="/" element={<Home userObj={userObj} />}></Route>
             <Route
               exact
               path="/profile"

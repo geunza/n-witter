@@ -8,6 +8,8 @@
 
 ---
 
+---
+
 ### 2022.10.07 ~ 2022.10.10
 
 firebase auth의 user를 끌고 오는 과정에서 아주 고생을 함.
@@ -73,17 +75,18 @@ useEffect(() => {
 }, [userObj]);
 ```
 
+---
+
+---
+
 ### 2022.10.10
 
 라우터에서의 props 에러
 App.js 에서 만든 userObj를 Router.js를 통해 Home.js로 전달하기 위함.
-아래와 같이 작성
 
 ```javascript
-//App.js
-<AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />;
-
 //Router.js
+//수정 전
 const AppRouter = ({ userObj }) => {
   return (
     <Router>
@@ -94,18 +97,7 @@ const AppRouter = ({ userObj }) => {
   );
 };
 
-//Home.js
-const Home = ({ userObj }) => {
-  console.log(userObj);
-  return <></>;
-};
-```
-
-props가 전달되지 않음.
-Route에서 위와 같이 작성하면 안됬고, 아래처럼 작성했어야함
-
-```javascript
-//Router.js
+//수정 후
 const AppRouter = ({ userObj }) => {
   return (
     <Router>
@@ -118,3 +110,18 @@ const AppRouter = ({ userObj }) => {
 ```
 
 같은 실수를 반복하지 않기 위해 작성
+
+---
+
+조건 == true 일때 return 구문
+
+```javascript
+{
+  isOwner && (
+    <>
+      <div>CONTENT</div>
+      <div>CONTENT</div>
+    </>
+  );
+}
+```

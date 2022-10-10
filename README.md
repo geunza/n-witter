@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# 트위터 클론코딩(2022.10.04 ~ ing)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+리액트 트위터 클론코딩
 
-## Available Scripts
+## firebase를 통한 로그인 및 데이터 저장
 
-In the project directory, you can run:
+## 9.6.1v를 사용해 아주 애를 먹음. 왜 버전에 집착하는지 알게됨.
 
-### `npm start`
+## 2022.10.07 ~ 2022.10.10
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+firebase auth의 user를 끌고 오는 과정에서 아주 고생을 함.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+  const [userObj, setUserObj] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setUserObj(auth.currentUser);
+        console.log(auth.currentUser);
+        console.log(userObj);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
+```
 
-### `npm test`
+라고 작성을 했을 때에, auth.currentUser는 출력이 잘 됨.
+바로 위에서 분명 setUserObj에 해당 값을 넣었고, 바로 콘솔에 출력을 했을 때에 출력이 되지 않는 상황이 발생. 계속 null이 출력된다.
+상식적으로 안 될 이유가 없는데 아무튼 안 됨. 약 3일동안 삽질을 열심히 함.
+결론은 useState에서 반환된 함수인 setState()를 사용해 state 변경 후 console.log(state)를 하면 변경 전의 값이 출력된다는 것.
+리액트 함수 컴포넌트는 클로저와 유사한 방식으로 동작한다고 한다.
+클로저가 무엇인지는 개념은 알지만 정확한 사용이유는 모른다.
+공부를 더 해야겠다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+입력
+  const [a, b] = useState('Hello');
+  useEffect(()=>{
+    console.log(a);
+    b('Hi');
+    console.log(a);
+  },[])
 
-### `npm run build`
+출력
+  + 'Hello'
+  + 'Hello'
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+아래와 같이 진행해서 확인을 해보니 정상적으로 출력이 된다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+  const [userObj, setUserObj] = useState(null);
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+        setUserObj(auth.currentUser);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    });
+  }, []);
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  useEffect(()=>{
+    console.log(userObj);
+  }, [userObj])
+```
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---

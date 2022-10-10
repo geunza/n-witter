@@ -6,7 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, firebaseInstance } from "fBase";
+import { auth } from "fBase";
 import React, { useState } from "react";
 
 const Auth = () => {
@@ -15,7 +15,6 @@ const Auth = () => {
   const [newAccount, setNewAccount] = useState(true);
   const [err, setError] = useState("");
   const onChange = (event) => {
-    //console.log(event);
     const {
       target: { name, value },
     } = event;

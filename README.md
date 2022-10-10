@@ -10,21 +10,21 @@
 
 firebase auth의 user를 끌고 오는 과정에서 아주 고생을 함.
 
-```
-  const [userObj, setUserObj] = useState(null);
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserObj(auth.currentUser);
-        console.log(auth.currentUser);
-        console.log(userObj);
-      } else {
-        setIsLoggedIn(false);
-      }
-      setInit(true);
-    });
-  }, []);
+```javascript
+const [userObj, setUserObj] = useState(null);
+useEffect(() => {
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      setIsLoggedIn(true);
+      setUserObj(auth.currentUser);
+      console.log(auth.currentUser);
+      console.log(userObj);
+    } else {
+      setIsLoggedIn(false);
+    }
+    setInit(true);
+  });
+}, []);
 ```
 
 라고 작성을 했을 때에, auth.currentUser는 출력이 잘 됨.
@@ -35,18 +35,17 @@ firebase auth의 user를 끌고 오는 과정에서 아주 고생을 함.
 클로저가 무엇인지는 개념은 알지만 정확한 사용이유는 모른다.
 공부를 더 해야겠다.
 
-```
-입력
-  const [a, b] = useState('Hello');
-  useEffect(()=>{
-    console.log(a);
-    b('Hi');
-    console.log(a);
-  },[])
-
-출력
-  + 'Hello'
-  + 'Hello'
+```javascript
+///입력
+const [a, b] = useState("Hello");
+useEffect(() => {
+  console.log(a);
+  b("Hi");
+  console.log(a);
+}, []) +
+  ///출력
+  "Hello" +
+  "Hello";
 ```
 
 아래와 같이 진행해서 확인을 해보니 정상적으로 출력이 된다.

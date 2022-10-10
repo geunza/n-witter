@@ -7,6 +7,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import Nweet from "components/Nweet";
 //https://firebase.google.com/docs/firestore/query-data/get-data?hl=ko
 //https://firebase.google.com/docs/firestore/manage-data/add-data?hl=ko
 const Home = ({ userObj }) => {
@@ -55,13 +56,13 @@ const Home = ({ userObj }) => {
         <input type="submit" value="Nweet" />
       </form>
       <div>
-        {nweets.map((nweet) => {
-          return (
-            <div key={nweet.createdAt}>
-              <h4>{nweet.text}</h4>
-            </div>
-          );
-        })}
+        {nweets.map((nweet) => (
+          <Nweet
+            key={nweet.createdAt}
+            isOwner={nweet.createorId === userObj.uid}
+            nweetObj={nweet}
+          />
+        ))}
       </div>
     </>
   );

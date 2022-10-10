@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
-import fbase, { auth } from "fBase";
+import { auth } from "fBase";
 
 function App() {
   const [init, setInit] = useState(false);
@@ -10,19 +10,16 @@ function App() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserObj(auth.currentUser);
-        console.log(auth.currentUser);
-        console.log(userObj);
+        setUserObj(user);
       } else {
         setIsLoggedIn(false);
       }
       setInit(true);
     });
   }, []);
-  //console.log(auth.currentUser);
-  setInterval(() => {
-    //console.log(auth.currentUser);
-  }, 2000);
+  //useEffect(() => {
+  //  console.log(userObj);
+  //}, [userObj]);
 
   return (
     <>
